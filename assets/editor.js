@@ -594,7 +594,7 @@
   function buildPromptText() {
     if (selectedElements.length === 0) return "";
 
-    const lines = [];
+    const lines = [location.pathname, ""];
     selectedElements.forEach((el, i) => {
       const ctx = buildElementContext(el, i + 1);
       lines.push(`${i + 1}. ${elementLabel(el)} <${ctx.tag}>`);
