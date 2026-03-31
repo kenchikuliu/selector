@@ -47,10 +47,10 @@ The bookmarklet injects `editor.css` + `editor.js` into the current page. Everyt
 ## Development
 
 ```bash
-# Edit assets/editor.js and assets/editor.css directly
-# Then serve locally to test:
-python3 -m http.server 8080
-open http://localhost:8080
+git clone https://github.com/oil-oil/selector.git
+cd selector
+# Edit assets/editor.js and assets/editor.css
+# Push to main — GitHub Pages auto-deploys
 ```
 
 ## License
