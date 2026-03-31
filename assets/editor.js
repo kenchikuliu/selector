@@ -25,7 +25,6 @@
   let wasJustDragging = false;
   let activePopover = null;
   const selectionHistory = [];
-  let screenshotBadges = [];
 
   function on(target, type, fn, capture) {
     target.addEventListener(type, fn, capture);
@@ -414,44 +413,6 @@
     }
   }
 
-  // ── Screenshot badges ─────────────────────────────────────
-  function showScreenshotBadges() {
-    removeScreenshotBadges();
-    selectedElements.forEach((el, i) => {
-      const r = el.getBoundingClientRect();
-      const badge = document.createElement("div");
-      badge.className = `${NS}-screenshot-badge`;
-      badge.textContent = i + 1;
-      badge.style.top = (r.top - 10) + "px";
-      badge.style.left = (r.left - 10) + "px";
-      document.body.appendChild(badge);
-      screenshotBadges.push(badge);
-    });
-  }
-
-  function removeScreenshotBadges() {
-    screenshotBadges.forEach(b => b.remove());
-    screenshotBadges = [];
-  }
-
-  function copyWithScreenshot() {
-    const text = buildPromptText();
-    if (!text) return;
-    writeToClipboard(text);
-
-    showScreenshotBadges();
-
-    const btn = chatPanel.querySelector(`.${NS}-copy-btn`);
-    if (copyTimer) clearTimeout(copyTimer);
-    btn.classList.add(`${NS}-copy-done`);
-    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Copied \u2014 screenshot now`;
-    copyTimer = setTimeout(() => {
-      btn.classList.remove(`${NS}-copy-done`);
-      btn.textContent = "Copy Prompt";
-      copyTimer = null;
-      removeScreenshotBadges();
-    }, 4000);
-  }
 
   function handleKeyDown(e) {
     if (isEditorElement(e.target) && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
@@ -465,11 +426,6 @@
     if (mod && e.key.toLowerCase() === "c" && !e.shiftKey && selectedElements.length > 0) {
       e.preventDefault();
       copyPrompt();
-      return;
-    }
-    if (mod && e.key.toLowerCase() === "i" && selectedElements.length > 0) {
-      e.preventDefault();
-      copyWithScreenshot();
       return;
     }
     if (mod && e.key.toLowerCase() === "z" && !e.shiftKey) {
@@ -602,7 +558,6 @@
           <span><kbd>\u2191\u2193</kbd> Navigate</span>
           <span><kbd>Space</kbd> Pause</span>
           <span><kbd>\u2318C</kbd> Copy</span>
-          <span><kbd>\u2318I</kbd> +Screenshot</span>
           <span><kbd>\u2318Z</kbd> Undo</span>
           <span><kbd>Esc</kbd> Clear</span>
         </div>
@@ -718,20 +673,23 @@
 
   // ── Copy with button feedback ──────────────────────────────
   let copyTimer = null;
-  function copyPrompt() {
-    const text = buildPromptText();
-    if (!text) return;
-    writeToClipboard(text);
-
+  function showCopyFeedback(msg) {
     const btn = chatPanel.querySelector(`.${NS}-copy-btn`);
     if (copyTimer) clearTimeout(copyTimer);
     btn.classList.add(`${NS}-copy-done`);
-    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Copied`;
+    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> ${msg}`;
     copyTimer = setTimeout(() => {
       btn.classList.remove(`${NS}-copy-done`);
       btn.textContent = "Copy Prompt";
       copyTimer = null;
     }, 2000);
+  }
+
+  function copyPrompt() {
+    const text = buildPromptText();
+    if (!text) return;
+    writeToClipboard(text);
+    showCopyFeedback("Copied");
   }
 
   // ── Prompt building ────────────────────────────────────────
