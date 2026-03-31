@@ -17,9 +17,11 @@ Open any web page, click the **Selector** bookmark.
 | **Click** | Select an element |
 | **Shift + Click** | Add to selection |
 | **Drag** | Marquee select multiple elements |
+| **↑ / ↓** | Navigate to parent / child element |
 | **✎ button** | Add per-element instruction |
 | **Cmd+C** | Copy prompt to clipboard |
-| **Copy Prompt** | Same, via button |
+| **Shift+Cmd+C** | Copy prompt + show numbered badges for screenshot |
+| **Cmd+Z** | Undo last selection change |
 | **Space** | Pause / resume selecting |
 | **Esc** | Clear selection |
 

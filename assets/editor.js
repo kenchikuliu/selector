@@ -24,6 +24,8 @@
   let dragState = null;
   let wasJustDragging = false;
   let activePopover = null;
+  const selectionHistory = [];
+  let screenshotBadges = [];
 
   function on(target, type, fn, capture) {
     target.addEventListener(type, fn, capture);
@@ -196,6 +198,7 @@
     dragState.marquee.remove();
     dragState = null;
 
+    pushHistory();
     if (!e.shiftKey) clearSelection();
 
     document.querySelectorAll(`[${AI_ID}]`).forEach((el) => {
@@ -230,6 +233,7 @@
     const sel = window.getSelection();
     if (sel) sel.removeAllRanges();
 
+    pushHistory();
     const el = resolveTarget(e.target);
     if (e.shiftKey) {
       toggleElement(el);
@@ -360,17 +364,125 @@
     removeAnnotationPopover();
   }
 
+  // ── Selection history (undo) ────────────────────────────────
+  function pushHistory() {
+    selectionHistory.push({
+      elements: [...selectedElements],
+      annotations: new Map(annotations),
+    });
+    if (selectionHistory.length > 30) selectionHistory.shift();
+  }
+
+  function undo() {
+    if (selectionHistory.length === 0) return;
+    const state = selectionHistory.pop();
+    destroyAllOverlays();
+    removeAnnotationPopover();
+    selectedElements = state.elements;
+    annotations.clear();
+    for (const [k, v] of state.annotations) annotations.set(k, v);
+    for (const el of selectedElements) createSelOverlay(el);
+    updateTags();
+  }
+
+  // ── Parent / child navigation ─────────────────────────────
+  function navigateToParent() {
+    if (selectedElements.length !== 1) return;
+    let parent = selectedElements[0].parentElement;
+    while (parent && parent !== document.body && parent !== document.documentElement) {
+      if (!isEditorElement(parent) && isVisible(parent)) {
+        pushHistory();
+        clearSelection();
+        addSelection(parent);
+        updateTags();
+        return;
+      }
+      parent = parent.parentElement;
+    }
+  }
+
+  function navigateToChild() {
+    if (selectedElements.length !== 1) return;
+    for (const child of selectedElements[0].children) {
+      if (!isEditorElement(child) && isVisible(child) && isMeaningful(child)) {
+        pushHistory();
+        clearSelection();
+        addSelection(child);
+        updateTags();
+        return;
+      }
+    }
+  }
+
+  // ── Screenshot badges ─────────────────────────────────────
+  function showScreenshotBadges() {
+    removeScreenshotBadges();
+    selectedElements.forEach((el, i) => {
+      const r = el.getBoundingClientRect();
+      const badge = document.createElement("div");
+      badge.className = `${NS}-screenshot-badge`;
+      badge.textContent = i + 1;
+      badge.style.top = (r.top - 10) + "px";
+      badge.style.left = (r.left - 10) + "px";
+      document.body.appendChild(badge);
+      screenshotBadges.push(badge);
+    });
+  }
+
+  function removeScreenshotBadges() {
+    screenshotBadges.forEach(b => b.remove());
+    screenshotBadges = [];
+  }
+
+  function copyWithScreenshot() {
+    const text = buildPromptText();
+    if (!text) return;
+    writeToClipboard(text);
+
+    showScreenshotBadges();
+
+    const btn = chatPanel.querySelector(`.${NS}-copy-btn`);
+    if (copyTimer) clearTimeout(copyTimer);
+    btn.classList.add(`${NS}-copy-done`);
+    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Copied \u2014 screenshot now`;
+    copyTimer = setTimeout(() => {
+      btn.classList.remove(`${NS}-copy-done`);
+      btn.textContent = "Copy Prompt";
+      copyTimer = null;
+      removeScreenshotBadges();
+    }, 4000);
+  }
+
   function handleKeyDown(e) {
     if (isEditorElement(e.target) && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
+    const mod = e.metaKey || e.ctrlKey;
+
     if (e.key === "Escape") {
       if (activePopover) { removeAnnotationPopover(); }
-      else { clearSelection(); updateTags(); }
+      else { pushHistory(); clearSelection(); updateTags(); }
+      return;
     }
-    if ((e.metaKey || e.ctrlKey) && e.key === "c" && selectedElements.length > 0) {
+    if (mod && e.key.toLowerCase() === "c" && selectedElements.length > 0) {
       e.preventDefault();
-      copyPrompt();
+      if (e.shiftKey) copyWithScreenshot(); else copyPrompt();
+      return;
     }
-    if (e.key === " " && !e.metaKey && !e.ctrlKey && !e.altKey) {
+    if (mod && e.key.toLowerCase() === "z" && !e.shiftKey) {
+      e.preventDefault();
+      undo();
+      return;
+    }
+    if (e.key === "ArrowUp" && selectedElements.length === 1) {
+      e.preventDefault();
+      navigateToParent();
+      return;
+    }
+    if (e.key === "ArrowDown" && selectedElements.length === 1) {
+      e.preventDefault();
+      navigateToChild();
+      return;
+    }
+    if (e.key === " " && !mod && !e.altKey) {
       e.preventDefault();
       togglePaused();
     }
@@ -481,9 +593,12 @@
         <div class="${NS}-chat-tags ${NS}-hidden"></div>
         <div class="${NS}-shortcuts">
           <span><kbd>Click</kbd> Select</span>
-          <span><kbd>Shift</kbd> Multi-select</span>
+          <span><kbd>Shift</kbd> Multi</span>
+          <span><kbd>\u2191\u2193</kbd> Navigate</span>
           <span><kbd>Space</kbd> Pause</span>
           <span><kbd>\u2318C</kbd> Copy</span>
+          <span><kbd>\u21e7\u2318C</kbd> +Screenshot</span>
+          <span><kbd>\u2318Z</kbd> Undo</span>
           <span><kbd>Esc</kbd> Clear</span>
         </div>
         <button class="${NS}-copy-btn" disabled>Copy Prompt</button>
