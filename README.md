@@ -28,13 +28,14 @@ Open any web page, click the **Selector** bookmark.
 | **← / →** | Navigate to previous / next sibling |
 | **✎ button** | Add per-element instruction |
 | **Task box** | Add one overall request for the selected area |
+| **Target AI** | Switch prompt format for Codex / Claude / Cursor |
 | **Safe / Full** | Toggle export detail level |
 | **⌘C** | Copy prompt to clipboard |
 | **⌘Z** | Undo last selection change |
 | **Space** | Pause / resume selecting |
 | **Esc** | Clear selection |
 
-The copied prompt is formatted for AI coding tools with a top-level task, page context, selected element targets, and implementation notes. `Full` mode also includes text, truncated HTML, and `data-*` attributes.
+The copied prompt is formatted for AI coding tools with a top-level task, page context, selected element targets, and implementation notes. You can switch prompt shape for Codex, Claude Code, or Cursor. `Full` mode also includes text, truncated HTML, and `data-*` attributes.
 
 ## Example output
 

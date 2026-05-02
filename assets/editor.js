@@ -19,6 +19,7 @@
   let minimized = false;
   let paused = false;
   let exportMode = "safe";
+  let promptTarget = "codex";
   let domObserver = null;
   const selOverlays = new Map();
   const annotations = new Map();
@@ -525,6 +526,27 @@
     if (label) label.textContent = mode === "safe" ? "Safe copy" : "Full copy";
   }
 
+  function setPromptTarget(target) {
+    if (!["codex", "claude", "cursor"].includes(target)) return;
+    promptTarget = target;
+
+    const controls = chatPanel.querySelectorAll(`.${NS}-target-btn`);
+    controls.forEach((btn) => {
+      const active = btn.dataset.target === target;
+      btn.classList.toggle(`${NS}-target-btn-active`, active);
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+
+    const copyBtn = chatPanel.querySelector(`.${NS}-copy-btn`);
+    if (copyBtn) copyBtn.textContent = `Copy for ${targetLabel(promptTarget)}`;
+  }
+
+  function targetLabel(target) {
+    if (target === "claude") return "Claude Code";
+    if (target === "cursor") return "Cursor";
+    return "Codex";
+  }
+
   // ── Annotation popover ─────────────────────────────────────
   function showAnnotationPopover(el, btn) {
     removeAnnotationPopover();
@@ -639,6 +661,14 @@
             placeholder="Describe what to change for the selected area..."
           ></textarea>
         </div>
+        <div class="${NS}-target-row">
+          <span class="${NS}-target-label">Target AI</span>
+          <div class="${NS}-target-switch" role="group" aria-label="Prompt target">
+            <button class="${NS}-target-btn ${NS}-target-btn-active" data-target="codex" aria-pressed="true">Codex</button>
+            <button class="${NS}-target-btn" data-target="claude" aria-pressed="false">Claude</button>
+            <button class="${NS}-target-btn" data-target="cursor" aria-pressed="false">Cursor</button>
+          </div>
+        </div>
         <div class="${NS}-shortcuts">
           <span><kbd>Click</kbd> Select</span>
           <span><kbd>Shift</kbd> Multi</span>
@@ -648,7 +678,7 @@
           <span><kbd>\u2318Z</kbd> Undo</span>
           <span><kbd>Esc</kbd> Clear</span>
         </div>
-        <button class="${NS}-copy-btn" disabled>Copy Prompt</button>
+        <button class="${NS}-copy-btn" disabled>Copy for Codex</button>
       </div>
     `;
     document.body.appendChild(chatPanel);
@@ -662,6 +692,12 @@
     });
     chatPanel.querySelector(`.${NS}-prompt-input`).addEventListener("input", (e) => {
       updateGlobalInstruction(e.target.value);
+    });
+    chatPanel.querySelectorAll(`.${NS}-target-btn`).forEach((btn) => {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        setPromptTarget(btn.dataset.target);
+      };
     });
 
     chatPanel.querySelector('[data-action="minimize"]').onclick = toggleMinimize;
@@ -776,7 +812,7 @@
     btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> ${msg}`;
     copyTimer = setTimeout(() => {
       btn.classList.remove(`${NS}-copy-done`);
-      btn.textContent = "Copy Prompt";
+      btn.textContent = `Copy for ${targetLabel(promptTarget)}`;
       copyTimer = null;
     }, 2000);
   }
@@ -785,19 +821,26 @@
     const text = buildPromptText();
     if (!text) return;
     writeToClipboard(text);
-    showCopyFeedback("Copied");
+    showCopyFeedback(`Copied for ${targetLabel(promptTarget)}`);
   }
 
   // ── Prompt building ────────────────────────────────────────
   function buildPromptText() {
     if (selectedElements.length === 0) return "";
 
+    if (promptTarget === "claude") return buildClaudePrompt();
+    if (promptTarget === "cursor") return buildCursorPrompt();
+    return buildCodexPrompt();
+  }
+
+  function buildCodexPrompt() {
     const lines = [
       "Task",
       globalInstruction || "Update the selected UI region.",
       "",
       "Page Context",
       `- Path: ${location.pathname}`,
+      `- Target AI: ${targetLabel(promptTarget)}`,
       `- Export mode: ${exportMode}`,
       exportMode === "safe"
         ? "- Privacy: text, html, and data-* attributes are omitted."
@@ -806,7 +849,63 @@
       "Selected Elements",
       "Use these exact targets when making changes:",
       "",
+      ...buildSelectedElementLines(),
+      "",
+      "Implementation Notes",
+      "- Keep the change scoped to the selected elements unless the task requires adjacent layout updates.",
+      "- Preserve existing behavior unless the task explicitly asks for interaction changes.",
+      "- If source info is present, prefer editing that component instead of patching generated DOM.",
     ];
+    return lines.join("\n");
+  }
+
+  function buildClaudePrompt() {
+    const lines = [
+      "You are editing a web UI.",
+      "",
+      "Primary task",
+      globalInstruction || "Update the selected UI region.",
+      "",
+      "Constraints",
+      "- Stay focused on the selected area.",
+      "- Preserve behavior unless a behavior change is explicitly requested.",
+      exportMode === "safe"
+        ? "- This export is privacy-reduced and omits text, html, and data-* attributes."
+        : "- This export includes text, html, and data-* attributes when available.",
+      "",
+      `Page: ${location.pathname}`,
+      "",
+      "Selected targets",
+      ...buildSelectedElementLines(),
+      "",
+      "Preferred execution",
+      "- If source information is present, edit the source component.",
+      "- Explain any unavoidable changes outside the selected elements.",
+    ];
+    return lines.join("\n");
+  }
+
+  function buildCursorPrompt() {
+    const lines = [
+      `Task: ${globalInstruction || "Update the selected UI region."}`,
+      `Page: ${location.pathname}`,
+      `Target: ${targetLabel(promptTarget)}`,
+      `Export mode: ${exportMode}`,
+      exportMode === "safe" ? "Privacy: reduced" : "Privacy: full",
+      "",
+      "Selected elements",
+      ...buildSelectedElementLines(),
+      "",
+      "Requirements",
+      "- Scope the edits to these elements.",
+      "- Keep the existing app behavior intact unless the task says otherwise.",
+      "- Prefer editing source files/components when source hints are available.",
+    ];
+    return lines.join("\n");
+  }
+
+  function buildSelectedElementLines() {
+    const lines = [];
     selectedElements.forEach((el, i) => {
       const ctx = buildElementContext(el, i + 1);
       lines.push(`${i + 1}. ${elementLabel(el)} <${ctx.tag}>`);
@@ -824,12 +923,7 @@
       const note = annotations.get(aiId);
       if (note) lines.push(`   instruction: ${note}`);
     });
-    lines.push("");
-    lines.push("Implementation Notes");
-    lines.push("- Keep the change scoped to the selected elements unless the task requires adjacent layout updates.");
-    lines.push("- Preserve existing behavior unless the task explicitly asks for interaction changes.");
-    lines.push("- If source info is present, prefer editing that component instead of patching generated DOM.");
-    return lines.join("\n");
+    return lines;
   }
 
   function writeToClipboard(text) {
