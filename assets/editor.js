@@ -18,6 +18,8 @@
   let lastMoveTarget = null;
   let minimized = false;
   let paused = false;
+  let exportMode = "safe";
+  let domObserver = null;
   const selOverlays = new Map();
   const annotations = new Map();
   const listeners = [];
@@ -36,6 +38,7 @@
     assignAiIds(document.body);
     createHoverBox();
     createChatPanel();
+    observeDom();
 
     on(document, "mousedown", handleMouseDown, true);
     on(document, "click", handleClick, true);
@@ -57,6 +60,10 @@
 
   // ── Destroy ────────────────────────────────────────────────
   function destroy() {
+    if (domObserver) {
+      domObserver.disconnect();
+      domObserver = null;
+    }
     for (const { target, type, fn, capture } of listeners) {
       target.removeEventListener(type, fn, capture);
     }
@@ -68,12 +75,28 @@
 
   // ── AI-ID ──────────────────────────────────────────────────
   function assignAiIds(root) {
+    if (!root || root.nodeType !== 1) return;
+    if (!isEditorElement(root) && !root.hasAttribute(AI_ID)) {
+      root.setAttribute(AI_ID, `el-${aiIdCounter++}`);
+    }
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
     let node;
     while ((node = walker.nextNode())) {
       if (isEditorElement(node)) continue;
       if (!node.hasAttribute(AI_ID)) node.setAttribute(AI_ID, `el-${aiIdCounter++}`);
     }
+  }
+
+  function observeDom() {
+    if (!window.MutationObserver || !document.body) return;
+    domObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === 1) assignAiIds(node);
+        });
+      }
+    });
+    domObserver.observe(document.body, { childList: true, subtree: true });
   }
 
   function isEditorElement(el) {
@@ -486,6 +509,21 @@
     if (label) label.textContent = paused ? "Paused" : "Selecting";
   }
 
+  function setExportMode(mode) {
+    if (mode !== "safe" && mode !== "full") return;
+    exportMode = mode;
+
+    const controls = chatPanel.querySelectorAll(`.${NS}-mode-btn`);
+    controls.forEach((btn) => {
+      const active = btn.dataset.mode === mode;
+      btn.classList.toggle(`${NS}-mode-btn-active`, active);
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+
+    const label = chatPanel.querySelector(`.${NS}-mode-label`);
+    if (label) label.textContent = mode === "safe" ? "Safe copy" : "Full copy";
+  }
+
   // ── Annotation popover ─────────────────────────────────────
   function showAnnotationPopover(el, btn) {
     removeAnnotationPopover();
@@ -580,6 +618,13 @@
       </div>
       <div class="${NS}-panel-body">
         <div class="${NS}-chat-tags ${NS}-hidden"></div>
+        <div class="${NS}-mode-row">
+          <span class="${NS}-mode-label">Safe copy</span>
+          <div class="${NS}-mode-switch" role="group" aria-label="Export mode">
+            <button class="${NS}-mode-btn ${NS}-mode-btn-active" data-mode="safe" aria-pressed="true">Safe</button>
+            <button class="${NS}-mode-btn" data-mode="full" aria-pressed="false">Full</button>
+          </div>
+        </div>
         <div class="${NS}-shortcuts">
           <span><kbd>Click</kbd> Select</span>
           <span><kbd>Shift</kbd> Multi</span>
@@ -595,6 +640,12 @@
     document.body.appendChild(chatPanel);
 
     chatPanel.querySelector(`.${NS}-copy-btn`).onclick = () => copyPrompt();
+    chatPanel.querySelectorAll(`.${NS}-mode-btn`).forEach((btn) => {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        setExportMode(btn.dataset.mode);
+      };
+    });
 
     chatPanel.querySelector('[data-action="minimize"]').onclick = toggleMinimize;
     chatPanel.querySelector('[data-action="close"]').onclick = destroy;
@@ -724,16 +775,26 @@
   function buildPromptText() {
     if (selectedElements.length === 0) return "";
 
-    const lines = ["Page: " + location.pathname, ""];
+    const lines = [
+      "Page: " + location.pathname,
+      "Export: " + exportMode,
+      exportMode === "safe"
+        ? "Note: text, html, and data-* attributes are omitted in Safe mode."
+        : "Note: Full mode may include page text, html, and data-* attributes.",
+      "",
+    ];
     selectedElements.forEach((el, i) => {
       const ctx = buildElementContext(el, i + 1);
       lines.push(`${i + 1}. ${elementLabel(el)} <${ctx.tag}>`);
       if (ctx.selector)  lines.push(`   selector: ${ctx.selector}`);
       if (ctx.source)    lines.push(`   source: ${ctx.source}`);
       if (ctx.react)     lines.push(`   react: ${ctx.react}`);
-      if (ctx.text)      lines.push(`   text: "${ctx.text}"`);
-      Object.entries(ctx.dataAttrs).forEach(([k, v]) => lines.push(`   ${k}: ${v}`));
-      if (ctx.outerHTML)  lines.push(`   html: ${ctx.outerHTML}`);
+      if (ctx.classes.length) lines.push(`   classes: ${ctx.classes.join(" ")}`);
+      if (exportMode === "full") {
+        if (ctx.text) lines.push(`   text: "${ctx.text}"`);
+        Object.entries(ctx.dataAttrs).forEach(([k, v]) => lines.push(`   ${k}: ${v}`));
+        if (ctx.outerHTML) lines.push(`   html: ${ctx.outerHTML}`);
+      }
 
       const aiId = el.getAttribute(AI_ID);
       const note = annotations.get(aiId);

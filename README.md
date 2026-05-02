@@ -4,6 +4,11 @@ Point at any element. Tell your AI what to change.
 
 A bookmarklet that lets you visually select elements on any web page, add instructions, and copy a structured prompt — paste it into Claude Code, Codex, Cursor, or any AI coding assistant.
 
+This fork adds two practical hardening changes:
+
+- `Safe` copy mode is the default and omits element text, HTML, and `data-*` attributes.
+- A DOM observer assigns IDs to newly rendered nodes so React / Next.js pages keep working after client-side updates.
+
 ## Install
 
 1. Visit the **[install page](https://oil-oil.github.io/selector/)**
@@ -22,12 +27,13 @@ Open any web page, click the **Selector** bookmark.
 | **↑ / ↓** | Navigate to parent / child element |
 | **← / →** | Navigate to previous / next sibling |
 | **✎ button** | Add per-element instruction |
+| **Safe / Full** | Toggle export detail level |
 | **⌘C** | Copy prompt to clipboard |
 | **⌘Z** | Undo last selection change |
 | **Space** | Pause / resume selecting |
 | **Esc** | Clear selection |
 
-The copied prompt includes element metadata (tag, selector, text, React component info) plus any per-element instructions you added.
+The copied prompt always includes structural metadata like tag and selector, plus any per-element instructions you added. `Full` mode also includes text, truncated HTML, and `data-*` attributes.
 
 ## Example output
 
@@ -49,6 +55,10 @@ Page: /dashboard
    instruction: Add an "Analytics" link after "Settings"
 ```
 
+## Privacy
+
+`Safe` mode is the default because copied prompts often get pasted into third-party AI tools. Use `Full` only when you intentionally want to include visible text, truncated HTML, and `data-*` attributes from the page.
+
 ## How it works
 
 The bookmarklet injects `editor.css` + `editor.js` into the current page. Everything runs client-side — no data is sent anywhere. The code is bundled into the bookmark at install time, so it works offline after that.
@@ -56,7 +66,7 @@ The bookmarklet injects `editor.css` + `editor.js` into the current page. Everyt
 ## Development
 
 ```bash
-git clone https://github.com/oil-oil/selector.git
+git clone https://github.com/kenchikuliu/selector.git
 cd selector
 # Edit assets/editor.js and assets/editor.css
 # Push to main — GitHub Pages auto-deploys
