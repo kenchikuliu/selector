@@ -9,6 +9,7 @@
 
   const NS = "ai-editor";
   const AI_ID = "data-ai-id";
+  const STORAGE_KEY = "ai-editor-settings";
 
   let selectedElements = [];
   let chatPanel = null;
@@ -29,6 +30,8 @@
   let activePopover = null;
   let globalInstruction = "";
   const selectionHistory = [];
+
+  loadSettings();
 
   function on(target, type, fn, capture) {
     target.addEventListener(type, fn, capture);
@@ -107,6 +110,33 @@
 
   function byAiId(id) {
     return document.querySelector(`[${AI_ID}="${id}"]`);
+  }
+
+  function loadSettings() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      if (saved.exportMode === "safe" || saved.exportMode === "full") {
+        exportMode = saved.exportMode;
+      }
+      if (["codex", "claude", "cursor", "json"].includes(saved.promptTarget)) {
+        promptTarget = saved.promptTarget;
+      }
+      if (typeof saved.globalInstruction === "string") {
+        globalInstruction = saved.globalInstruction;
+      }
+    } catch (_) {}
+  }
+
+  function saveSettings() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        exportMode,
+        promptTarget,
+        globalInstruction,
+      }));
+    } catch (_) {}
   }
 
   // ── Resolve target ─────────────────────────────────────────
@@ -524,10 +554,11 @@
 
     const label = chatPanel.querySelector(`.${NS}-mode-label`);
     if (label) label.textContent = mode === "safe" ? "Safe copy" : "Full copy";
+    saveSettings();
   }
 
   function setPromptTarget(target) {
-    if (!["codex", "claude", "cursor"].includes(target)) return;
+    if (!["codex", "claude", "cursor", "json"].includes(target)) return;
     promptTarget = target;
 
     const controls = chatPanel.querySelectorAll(`.${NS}-target-btn`);
@@ -539,11 +570,13 @@
 
     const copyBtn = chatPanel.querySelector(`.${NS}-copy-btn`);
     if (copyBtn) copyBtn.textContent = `Copy for ${targetLabel(promptTarget)}`;
+    saveSettings();
   }
 
   function targetLabel(target) {
     if (target === "claude") return "Claude Code";
     if (target === "cursor") return "Cursor";
+    if (target === "json") return "JSON";
     return "Codex";
   }
 
@@ -617,6 +650,7 @@
 
   function updateGlobalInstruction(value) {
     globalInstruction = (value || "").trim();
+    saveSettings();
   }
 
   // ── Chat panel ─────────────────────────────────────────────
@@ -667,6 +701,7 @@
             <button class="${NS}-target-btn ${NS}-target-btn-active" data-target="codex" aria-pressed="true">Codex</button>
             <button class="${NS}-target-btn" data-target="claude" aria-pressed="false">Claude</button>
             <button class="${NS}-target-btn" data-target="cursor" aria-pressed="false">Cursor</button>
+            <button class="${NS}-target-btn" data-target="json" aria-pressed="false">JSON</button>
           </div>
         </div>
         <div class="${NS}-shortcuts">
@@ -699,6 +734,9 @@
         setPromptTarget(btn.dataset.target);
       };
     });
+    chatPanel.querySelector(`.${NS}-prompt-input`).value = globalInstruction;
+    setExportMode(exportMode);
+    setPromptTarget(promptTarget);
 
     chatPanel.querySelector('[data-action="minimize"]').onclick = toggleMinimize;
     chatPanel.querySelector('[data-action="close"]').onclick = destroy;
@@ -828,9 +866,27 @@
   function buildPromptText() {
     if (selectedElements.length === 0) return "";
 
+    if (promptTarget === "json") return buildJsonPrompt();
     if (promptTarget === "claude") return buildClaudePrompt();
     if (promptTarget === "cursor") return buildCursorPrompt();
     return buildCodexPrompt();
+  }
+
+  function buildJsonPrompt() {
+    return JSON.stringify({
+      task: globalInstruction || "Update the selected UI region.",
+      page: {
+        path: location.pathname,
+        exportMode,
+        target: promptTarget,
+      },
+      selectedElements: buildSelectedElementObjects(),
+      implementationNotes: [
+        "Keep the change scoped to the selected elements unless adjacent layout updates are required.",
+        "Preserve existing behavior unless the task explicitly asks for interaction changes.",
+        "Prefer editing source files/components when source hints are available.",
+      ],
+    }, null, 2);
   }
 
   function buildCodexPrompt() {
@@ -906,9 +962,8 @@
 
   function buildSelectedElementLines() {
     const lines = [];
-    selectedElements.forEach((el, i) => {
-      const ctx = buildElementContext(el, i + 1);
-      lines.push(`${i + 1}. ${elementLabel(el)} <${ctx.tag}>`);
+    buildSelectedElementObjects().forEach((ctx) => {
+      lines.push(`${ctx.index}. ${ctx.label} <${ctx.tag}>`);
       if (ctx.selector) lines.push(`   selector: ${ctx.selector}`);
       if (ctx.source) lines.push(`   source: ${ctx.source}`);
       if (ctx.react) lines.push(`   react: ${ctx.react}`);
@@ -918,12 +973,35 @@
         Object.entries(ctx.dataAttrs).forEach(([k, v]) => lines.push(`   ${k}: ${v}`));
         if (ctx.outerHTML) lines.push(`   html: ${ctx.outerHTML}`);
       }
-
-      const aiId = el.getAttribute(AI_ID);
-      const note = annotations.get(aiId);
-      if (note) lines.push(`   instruction: ${note}`);
+      if (ctx.instruction) lines.push(`   instruction: ${ctx.instruction}`);
     });
     return lines;
+  }
+
+  function buildSelectedElementObjects() {
+    return selectedElements.map((el, i) => {
+      const ctx = buildElementContext(el, i + 1);
+      const aiId = el.getAttribute(AI_ID);
+      const note = annotations.get(aiId);
+      const result = {
+        index: i + 1,
+        label: elementLabel(el),
+        tag: ctx.tag,
+        selector: ctx.selector,
+        source: ctx.source || null,
+        react: ctx.react || null,
+        classes: ctx.classes,
+        instruction: note || null,
+      };
+
+      if (exportMode === "full") {
+        result.text = ctx.text || "";
+        result.dataAttrs = ctx.dataAttrs;
+        result.html = ctx.outerHTML || "";
+      }
+
+      return result;
+    });
   }
 
   function writeToClipboard(text) {
