@@ -5,7 +5,12 @@
 (function () {
   "use strict";
 
-  if (document.querySelector(".ai-editor-root")) return;
+  const APP_KEY = "__AI_SELECTOR_APP__";
+  const existingApp = window[APP_KEY];
+  if (existingApp && typeof existingApp.toggle === "function") {
+    existingApp.toggle();
+    return;
+  }
 
   const NS = "ai-editor";
   const AI_ID = "data-ai-id";
@@ -46,7 +51,11 @@
   }
 
   // ── Init ───────────────────────────────────────────────────
+  let initialized = false;
+
   function init() {
+    if (initialized || document.querySelector(".ai-editor-root")) return;
+    initialized = true;
     assignAiIds(document.body);
     createHoverBox();
     createChatPanel();
@@ -72,6 +81,8 @@
 
   // ── Destroy ────────────────────────────────────────────────
   function destroy() {
+    if (!initialized) return;
+    initialized = false;
     if (domObserver) {
       domObserver.disconnect();
       domObserver = null;
@@ -83,6 +94,30 @@
     removeAnnotationPopover();
     if (hoverBox) hoverBox.remove();
     if (chatPanel) chatPanel.remove();
+    hoverBox = null;
+    chatPanel = null;
+    selectedElements = [];
+    annotations.clear();
+    listeners.length = 0;
+    dragState = null;
+    wasJustDragging = false;
+    activePopover = null;
+    rafPending = false;
+    lastMoveTarget = null;
+    minimized = false;
+    paused = false;
+  }
+
+  function toggle() {
+    if (initialized || document.querySelector(".ai-editor-root")) {
+      destroy();
+      return;
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init, { once: true });
+      return;
+    }
+    init();
   }
 
   // ── AI-ID ──────────────────────────────────────────────────
@@ -1335,6 +1370,6 @@
   }
 
   // ── Boot ───────────────────────────────────────────────────
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
-  else init();
+  window[APP_KEY] = { init, destroy, toggle };
+  toggle();
 })();

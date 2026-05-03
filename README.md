@@ -2,7 +2,7 @@
 
 Point at any element. Tell your AI what to change.
 
-A bookmarklet that lets you visually select elements on any web page, add instructions, and copy a structured prompt — paste it into Claude Code, Codex, Cursor, or any AI coding assistant.
+A bookmarklet and Chrome/Edge extension that let you visually select elements on any web page, add instructions, and copy a structured prompt — paste it into Claude Code, Codex, Cursor, or any AI coding assistant.
 
 This fork adds two practical hardening changes:
 
@@ -11,13 +11,24 @@ This fork adds two practical hardening changes:
 
 ## Install
 
+### Chrome / Edge extension
+
+1. Open `chrome://extensions` or `edge://extensions`
+2. Turn on **Developer mode**
+3. Click **Load unpacked**
+4. Select this folder: `selector`
+5. Pin the **Selector** extension
+6. Open any page and click the extension icon to toggle Selector on/off
+
+### Bookmarklet
+
 1. Visit the **[install page](https://oil-oil.github.io/selector/)**
 2. Drag the **Selector** button to your bookmarks bar (one-time)
 3. Done
 
 ## Usage
 
-Open any web page, click the **Selector** bookmark.
+Open any web page, then either click the **Selector** extension icon or the **Selector** bookmark.
 
 | Action | What it does |
 |---|---|
@@ -73,7 +84,7 @@ The `Snapshot` export is best-effort. It generates an SVG preview of the selecte
 
 ## How it works
 
-The bookmarklet injects `editor.css` + `editor.js` into the current page. Everything runs client-side — no data is sent anywhere. The code is bundled into the bookmark at install time, so it works offline after that.
+The bookmarklet injects `editor.css` + `editor.js` into the current page. The extension does the same thing through `chrome.scripting`. Everything runs client-side — no data is sent anywhere. The bookmark code is bundled at install time, so it works offline after that.
 
 ## Development
 
