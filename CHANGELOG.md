@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.3.0 - 2026-05-03
+
+Distribution polish release.
+
+### Added
+
+- Extension icon set in `assets/icons/` for toolbar and extension management UI
+- Manifest icon wiring for Chrome / Edge
+
+### Improved
+
+- Version bump to `1.3.0` to match the new polished extension package
+- Install page favicon now uses the project icon asset
+- GitHub Pages serves the bookmarklet install page from the renamed repository
+
 ## v1.2.0 - 2026-05-03
 
 Project rename and packaging alignment release.

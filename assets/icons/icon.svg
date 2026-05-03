@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title>Web Element Selector</title>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#111111"/>
+      <stop offset="100%" stop-color="#2f2f2f"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#bg)"/>
+  <rect x="28" y="28" width="72" height="72" rx="14" fill="none" stroke="#ffffff" stroke-width="8" opacity="0.92"/>
+  <circle cx="96" cy="32" r="10" fill="#4ade80"/>
+  <path d="M54 58h20" stroke="#4ade80" stroke-width="8" stroke-linecap="round"/>
+  <path d="M64 48v20" stroke="#4ade80" stroke-width="8" stroke-linecap="round"/>
+</svg>
