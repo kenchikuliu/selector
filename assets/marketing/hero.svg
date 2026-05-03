@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Web Element Selector hero preview</title>
+  <desc id="desc">Marketing hero showing the popup, selected page region, and copied prompt workflow.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c1110"/>
+      <stop offset="55%" stop-color="#141819"/>
+      <stop offset="100%" stop-color="#0a0d0d"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.03"/>
+    </linearGradient>
+    <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="40"/>
+    </filter>
+  </defs>
+  <rect width="1440" height="900" fill="url(#bg)"/>
+  <circle cx="210" cy="120" r="160" fill="#4ade80" fill-opacity="0.18" filter="url(#blur)"/>
+  <circle cx="1210" cy="760" r="220" fill="#22d3ee" fill-opacity="0.12" filter="url(#blur)"/>
+
+  <g transform="translate(72 78)">
+    <text x="0" y="0" fill="#8bf0b0" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">WEB ELEMENT SELECTOR</text>
+    <text x="0" y="72" fill="#f6f7f7" font-family="Arial, sans-serif" font-size="64" font-weight="700">Select page regions.</text>
+    <text x="0" y="146" fill="#f6f7f7" font-family="Arial, sans-serif" font-size="64" font-weight="700">Write a task. Copy for AI.</text>
+    <text x="0" y="206" fill="#aeb7b7" font-family="Arial, sans-serif" font-size="28">Built for Codex, Claude Code, Cursor, and any editor that can act on a precise UI prompt.</text>
+
+    <g transform="translate(0 270)">
+      <rect x="0" y="0" rx="18" ry="18" width="220" height="62" fill="#90f0b1"/>
+      <text x="110" y="39" fill="#112118" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700">Install Extension</text>
+      <rect x="242" y="0" rx="18" ry="18" width="220" height="62" fill="#ffffff" fill-opacity="0.07" stroke="#ffffff" stroke-opacity="0.08"/>
+      <text x="352" y="39" fill="#f7f7f7" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700">Use Bookmarklet</text>
+      <rect x="484" y="0" rx="18" ry="18" width="220" height="62" fill="#ffffff" fill-opacity="0.07" stroke="#ffffff" stroke-opacity="0.08"/>
+      <text x="594" y="39" fill="#f7f7f7" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700">Latest Release</text>
+    </g>
+  </g>
+
+  <g transform="translate(750 102)">
+    <rect x="0" y="0" width="620" height="690" rx="34" fill="#111416" stroke="#ffffff" stroke-opacity="0.08"/>
+    <rect x="34" y="34" width="552" height="332" rx="22" fill="#eceef0"/>
+    <rect x="68" y="74" width="214" height="26" rx="13" fill="#d5d9de"/>
+    <rect x="68" y="114" width="314" height="18" rx="9" fill="#dfe3e7"/>
+    <rect x="68" y="154" width="454" height="112" rx="20" fill="#ffffff"/>
+    <rect x="90" y="176" width="164" height="18" rx="9" fill="#c8d0d8"/>
+    <rect x="90" y="206" width="388" height="14" rx="7" fill="#d8dee4"/>
+    <rect x="90" y="232" width="308" height="14" rx="7" fill="#d8dee4"/>
+    <rect x="76" y="162" width="468" height="126" rx="22" fill="none" stroke="#111111" stroke-width="4"/>
+    <rect x="72" y="158" width="476" height="134" rx="24" fill="#111111" fill-opacity="0.05"/>
+    <rect x="524" y="150" width="28" height="28" rx="8" fill="#2f3640"/>
+    <path d="M533 167l5-5 5 5" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="64" y="306" width="158" height="14" rx="7" fill="#ccd2d8"/>
+    <rect x="64" y="336" width="440" height="12" rx="6" fill="#dae0e5"/>
+
+    <rect x="370" y="78" width="182" height="224" rx="22" fill="#111315" stroke="#ffffff" stroke-opacity="0.08"/>
+    <text x="398" y="112" fill="#8bf0b0" font-family="Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="1.5">SELECTING</text>
+    <text x="398" y="146" fill="#f5f5f5" font-family="Arial, sans-serif" font-size="22" font-weight="700">Launch Selector</text>
+    <rect x="398" y="172" width="126" height="12" rx="6" fill="#5e666a"/>
+    <rect x="398" y="202" width="128" height="38" rx="14" fill="#f5f5f5"/>
+    <text x="462" y="227" fill="#151617" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700">Launch</text>
+    <rect x="398" y="258" width="126" height="12" rx="6" fill="#31383c"/>
+    <rect x="398" y="278" width="88" height="12" rx="6" fill="#31383c"/>
+
+    <rect x="34" y="392" width="552" height="264" rx="26" fill="url(#panel)" stroke="#ffffff" stroke-opacity="0.08"/>
+    <text x="66" y="434" fill="#8bf0b0" font-family="Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="2">COPY FOR CODEX</text>
+    <text x="66" y="476" fill="#f4f6f6" font-family="Arial, sans-serif" font-size="28" font-weight="700">Task</text>
+    <text x="66" y="512" fill="#c2c9cb" font-family="Arial, sans-serif" font-size="20">Improve the visual hierarchy and spacing in this section.</text>
+    <text x="66" y="566" fill="#f4f6f6" font-family="Arial, sans-serif" font-size="28" font-weight="700">Selected Elements</text>
+    <text x="66" y="604" fill="#dce1e2" font-family="Courier New, monospace" font-size="18">1. .hero-title &lt;h1&gt;</text>
+    <text x="66" y="632" fill="#aeb7b7" font-family="Courier New, monospace" font-size="16">selector: body &gt; main &gt; section &gt; h1</text>
+  </g>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460" role="img" aria-labelledby="title">
+  <title id="title">Selection overlay preview</title>
+  <rect width="720" height="460" rx="32" fill="#0f1214"/>
+  <rect x="34" y="34" width="652" height="392" rx="28" fill="#ecf0f3"/>
+  <rect x="78" y="86" width="228" height="18" rx="9" fill="#d6dbe0"/>
+  <rect x="78" y="122" width="420" height="12" rx="6" fill="#dfe4e8"/>
+  <rect x="78" y="166" width="488" height="154" rx="26" fill="#ffffff"/>
+  <rect x="98" y="188" width="168" height="18" rx="9" fill="#c8d1d8"/>
+  <rect x="98" y="220" width="382" height="14" rx="7" fill="#d7dde3"/>
+  <rect x="98" y="246" width="324" height="14" rx="7" fill="#d7dde3"/>
+  <rect x="90" y="178" width="466" height="130" rx="24" fill="none" stroke="#111111" stroke-width="4"/>
+  <rect x="84" y="172" width="478" height="142" rx="28" fill="#111111" fill-opacity="0.05"/>
+  <rect x="76" y="160" width="116" height="28" rx="8" fill="#111111"/>
+  <text x="134" y="179" fill="#ffffff" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700">.hero-title</text>
+  <rect x="572" y="168" width="28" height="28" rx="8" fill="#2b3136"/>
+  <path d="M581 185l5-5 5 5" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="78" y="382" fill="#101214" font-family="Arial, sans-serif" font-size="24" font-weight="700">Select the exact region you want to change</text>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460" role="img" aria-labelledby="title">
+  <title id="title">Task and prompt preview</title>
+  <rect width="720" height="460" rx="32" fill="#101214"/>
+  <rect x="34" y="34" width="652" height="392" rx="28" fill="#171a1d" stroke="#ffffff" stroke-opacity="0.08"/>
+  <text x="70" y="88" fill="#8bf0b0" font-family="Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="2">TASK AND COPY</text>
+  <text x="70" y="132" fill="#f5f7f7" font-family="Arial, sans-serif" font-size="32" font-weight="700">Write what you want, then copy the prompt</text>
+  <rect x="70" y="168" width="580" height="72" rx="20" fill="#20252a"/>
+  <text x="94" y="212" fill="#dbe1e2" font-family="Arial, sans-serif" font-size="20">Improve the visual hierarchy and spacing in this section.</text>
+  <rect x="70" y="266" width="166" height="42" rx="14" fill="#2b3136"/>
+  <text x="153" y="293" fill="#f5f7f7" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700">Focused</text>
+  <rect x="252" y="266" width="166" height="42" rx="14" fill="#2b3136"/>
+  <text x="335" y="293" fill="#f5f7f7" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700">Codex</text>
+  <rect x="70" y="334" width="260" height="52" rx="16" fill="#90f0b1"/>
+  <text x="200" y="367" fill="#102016" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700">Copy for Codex</text>
+</svg>

@@ -1,56 +1,101 @@
 # Web Element Selector
 
-Point at any element. Tell your AI what to change.
+Select page regions. Write a task. Copy a prompt your AI editor can act on.
 
-A bookmarklet and Chrome/Edge extension that let you visually select elements on any web page, add instructions, and copy a structured prompt — paste it into Claude Code, Codex, Cursor, or any AI coding assistant.
+[![Latest Release](https://img.shields.io/github/v/release/kenchikuliu/web-element-selector?label=release)](https://github.com/kenchikuliu/web-element-selector/releases/latest)
+[![GitHub Pages](https://img.shields.io/badge/install-page-0f172a?logo=github&logoColor=white)](https://kenchikuliu.github.io/web-element-selector/)
+[![License](https://img.shields.io/badge/license-MIT-111827)](LICENSE)
 
-This fork adds two practical hardening changes:
+<p>
+  <a href="https://github.com/kenchikuliu/web-element-selector/releases/latest"><img src="assets/marketing/hero.svg" alt="Web Element Selector hero preview"></a>
+</p>
 
-- `Safe` copy mode is the default and omits element text, HTML, and `data-*` attributes.
-- A DOM observer assigns IDs to newly rendered nodes so React / Next.js pages keep working after client-side updates.
+Web Element Selector is a bookmarklet and Chrome/Edge extension for AI-assisted UI editing. Launch it on any page, click the exact area you want to change, describe the improvement, and copy a structured prompt for Codex, Claude Code, Cursor, or another coding assistant.
 
-## Install
+## Why it converts
 
-### Chrome / Edge extension
+- It removes the vague part of UI iteration. You point at the exact DOM region instead of describing “the card near the top”.
+- It preserves implementation context. The copied output includes selectors, nearby structure, and source hints when available.
+- It works in the workflows people already use: local dev pages, staging URLs, bookmarklets, and unpacked extensions.
+
+## Start here
+
+### Install the extension
 
 1. Open `chrome://extensions` or `edge://extensions`
-2. Turn on **Developer mode**
-3. Click **Load unpacked**
+2. Turn on `Developer mode`
+3. Click `Load unpacked`
 4. Select this folder: `web-element-selector`
-5. Pin the **Web Element Selector** extension
-6. Open any page and click the extension icon to toggle Web Element Selector on/off
+5. Pin `Web Element Selector`
+6. Click the extension icon and press `Launch Selector`
 
-### Bookmarklet
+### Or use the bookmarklet
 
-1. Visit `https://kenchikuliu.github.io/web-element-selector/`
-2. Drag the **Web Element Selector** button to your bookmarks bar (one-time)
-3. Done
+1. Open `https://kenchikuliu.github.io/web-element-selector/`
+2. Drag `Web Element Selector` to your bookmarks bar
+3. Open any page and click the bookmark
 
-## Usage
+### Download the packaged build
 
-Open any web page, then either click the **Web Element Selector** extension icon or the bookmark.
+- Latest release: `https://github.com/kenchikuliu/web-element-selector/releases/latest`
+- Current packaged zip: [`dist/web-element-selector-v1.7.0.zip`](dist/web-element-selector-v1.7.0.zip)
+
+## 3-step workflow
+
+### 1. Launch
+
+Open the popup from the extension icon and launch Selector on the current tab.
+
+<p>
+  <img src="assets/marketing/feature-popup.svg" alt="Popup preview showing Launch Selector button">
+</p>
+
+### 2. Select
+
+Click the exact UI block you want to change. Multi-select and keyboard navigation are built in.
+
+<p>
+  <img src="assets/marketing/feature-selection.svg" alt="Selection overlay preview">
+</p>
+
+### 3. Copy
+
+Write a task, choose the output mode, and copy a prompt formatted for your coding assistant.
+
+<p>
+  <img src="assets/marketing/feature-task.svg" alt="Task and copy preview">
+</p>
+
+## What you can control
+
+- `Target AI`: `Codex`, `Claude Code`, `Cursor`, `JSON`, or selector-only output
+- `Export mode`: `Safe` or `Full`
+- `Context mode`: `Focused` or `Nearby`
+- Per-element instructions
+- Global task text
+- Extension-level defaults from the settings page
+
+<p>
+  <img src="assets/marketing/feature-options.svg" alt="Options page preview">
+</p>
+
+## Key interactions
 
 | Action | What it does |
 |---|---|
-| **Click** | Select an element |
-| **Shift + Click** | Add to selection |
-| **Drag** | Marquee select multiple elements |
-| **↑ / ↓** | Navigate to parent / child element |
-| **← / →** | Navigate to previous / next sibling |
-| **✎ button** | Add per-element instruction |
-| **Task box** | Add one overall request for the selected area |
-| **Preset tasks** | Fill common UI improvement requests instantly |
-| **Focused / Nearby** | Export only the selected node or include nearby container context |
-| **Target AI** | Switch prompt format for Codex / Claude / Cursor / JSON |
-| **Selectors** | Copy the smallest selector-first export |
-| **Snapshot** | Export a best-effort SVG snapshot of the selected region |
-| **Safe / Full** | Toggle export detail level |
-| **⌘C** | Copy prompt to clipboard |
-| **⌘Z** | Undo last selection change |
-| **Space** | Pause / resume selecting |
-| **Esc** | Clear selection |
-
-The copied prompt is formatted for AI coding tools with a top-level task, page context, selected element targets, and implementation notes. You can switch prompt shape for Codex, Claude Code, Cursor, selector-only output, or a machine-readable JSON export. The picker also remembers your last export mode, context mode, target AI, and task text. `Full` mode also includes text, truncated HTML, and `data-*` attributes.
+| `Click` | Select an element |
+| `Shift + Click` | Add to selection |
+| `Drag` | Marquee select multiple elements |
+| `↑ / ↓` | Navigate to parent / child element |
+| `← / →` | Navigate to previous / next sibling |
+| `✎ button` | Add per-element instruction |
+| `Task box` | Add one overall request for the selected area |
+| `Focused / Nearby` | Control exported container context |
+| `Safe / Full` | Control how much page detail gets copied |
+| `⌘C / Ctrl+C` | Copy prompt |
+| `⌘Z / Ctrl+Z` | Undo the last selection change |
+| `Space` | Pause / resume selecting |
+| `Esc` | Clear selection |
 
 ## Example output
 
@@ -84,7 +129,7 @@ The `Snapshot` export is best-effort. It generates an SVG preview of the selecte
 
 ## How it works
 
-The bookmarklet injects `editor.css` + `editor.js` into the current page. The extension does the same thing through `chrome.scripting`. Everything runs client-side — no data is sent anywhere. The bookmark code is bundled at install time, so it works offline after that.
+The bookmarklet injects `editor.css` and `editor.js` into the current page. The extension uses `chrome.scripting` to inject the same picker. Everything runs client-side. No page data is sent anywhere.
 
 ## Development
 

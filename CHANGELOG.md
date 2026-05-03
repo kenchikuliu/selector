@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.7.0 - 2026-05-03
+
+Marketing and README showcase release.
+
+### Added
+
+- Product-style SVG showcase assets under `assets/marketing/`
+- Repository `LICENSE` file for clearer distribution metadata
+
+### Improved
+
+- README now opens like a landing page with conversion-first install and workflow sections
+- Visual previews now show popup, selection, copy flow, and settings at a glance
+
 ## v1.6.0 - 2026-05-03
 
 Configurable defaults release.

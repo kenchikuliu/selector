@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460" role="img" aria-labelledby="title">
+  <title id="title">Popup feature preview</title>
+  <rect width="720" height="460" rx="32" fill="#101214"/>
+  <rect x="36" y="36" width="648" height="388" rx="28" fill="#17191c" stroke="#ffffff" stroke-opacity="0.08"/>
+  <text x="70" y="86" fill="#8bf0b0" font-family="Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="2">POPUP</text>
+  <text x="70" y="132" fill="#f6f7f7" font-family="Arial, sans-serif" font-size="32" font-weight="700">Launch from the current tab</text>
+  <rect x="70" y="164" width="260" height="16" rx="8" fill="#60686c"/>
+  <rect x="70" y="210" width="580" height="108" rx="22" fill="#202429"/>
+  <rect x="94" y="238" width="220" height="16" rx="8" fill="#f2f5f4"/>
+  <rect x="94" y="266" width="330" height="12" rx="6" fill="#7b8388"/>
+  <rect x="70" y="344" width="580" height="48" rx="16" fill="#90f0b1"/>
+  <text x="360" y="374" fill="#132017" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700">Launch Selector</text>
+</svg>
