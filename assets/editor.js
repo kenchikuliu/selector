@@ -1,5 +1,5 @@
 /**
- * Selector — visual element picker with per-element annotations.
+ * Web Element Selector — visual element picker with per-element annotations.
  * Inject via bookmarklet. Click = select, Shift+click = multi, Drag = marquee.
  */
 (function () {
@@ -1235,7 +1235,7 @@
 
     return `
       <div style="background:#f3f4f6;padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-        <div style="font-size:20px;font-weight:700;color:#111;margin-bottom:6px;">Selector Snapshot</div>
+        <div style="font-size:20px;font-weight:700;color:#111;margin-bottom:6px;">Web Element Selector Snapshot</div>
         <div style="font-size:13px;color:#4b5563;margin-bottom:18px;">${escapeHtml(globalInstruction || "Update the selected UI region.")}</div>
         ${cards}
       </div>

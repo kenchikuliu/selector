@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.2.0 - 2026-05-03
+
+Project rename and packaging alignment release.
+
+### Changed
+
+- Renamed the project and extension branding to `Web Element Selector`
+- Updated repository references from `selector` to `web-element-selector`
+- Bumped the extension manifest version to `1.2.0`
+
+### Improved
+
+- Aligned the distributable package name with the current release version
+- Updated install and release documentation to use the new project name
+
 ## v1.1.0 - 2026-05-03
 
 Extension packaging release.
@@ -9,8 +24,8 @@ Extension packaging release.
 ### Added
 
 - Chrome / Edge Manifest V3 extension support via `manifest.json` and `background.js`
-- One-click toolbar launch for Selector without relying on a bookmarklet
-- `dist/selector-extension-v1.0.0.zip` for direct distribution and manual install
+- One-click toolbar launch for Web Element Selector without relying on a bookmarklet
+- `dist/web-element-selector-v1.1.0.zip` for direct distribution and manual install
 
 ### Improved
 

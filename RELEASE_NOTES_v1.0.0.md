@@ -1,6 +1,6 @@
-# Selector v1.0.0
+# Web Element Selector v1.0.0
 
-Selector is a bookmarklet for AI-assisted UI editing. You click the page, select the exact region you want to change, add instructions, and copy a prompt tailored for your coding assistant.
+Web Element Selector is a bookmarklet for AI-assisted UI editing. You click the page, select the exact region you want to change, add instructions, and copy a prompt tailored for your coding assistant.
 
 ## Highlights
 
@@ -17,7 +17,7 @@ Selector is a bookmarklet for AI-assisted UI editing. You click the page, select
 ## Typical workflow
 
 1. Open your local app or staging page
-2. Click the `Selector` bookmark
+2. Click the `Web Element Selector` bookmark
 3. Select the exact UI block you want to change
 4. Add a task such as `Optimize this area for mobile`
 5. Choose export mode, context mode, and target AI

@@ -1,4 +1,4 @@
-# Selector
+# Web Element Selector
 
 Point at any element. Tell your AI what to change.
 
@@ -16,19 +16,19 @@ This fork adds two practical hardening changes:
 1. Open `chrome://extensions` or `edge://extensions`
 2. Turn on **Developer mode**
 3. Click **Load unpacked**
-4. Select this folder: `selector`
-5. Pin the **Selector** extension
-6. Open any page and click the extension icon to toggle Selector on/off
+4. Select this folder: `web-element-selector`
+5. Pin the **Web Element Selector** extension
+6. Open any page and click the extension icon to toggle Web Element Selector on/off
 
 ### Bookmarklet
 
-1. Visit the **[install page](https://oil-oil.github.io/selector/)**
-2. Drag the **Selector** button to your bookmarks bar (one-time)
+1. Visit `https://kenchikuliu.github.io/web-element-selector/`
+2. Drag the **Web Element Selector** button to your bookmarks bar (one-time)
 3. Done
 
 ## Usage
 
-Open any web page, then either click the **Selector** extension icon or the **Selector** bookmark.
+Open any web page, then either click the **Web Element Selector** extension icon or the bookmark.
 
 | Action | What it does |
 |---|---|
@@ -89,8 +89,8 @@ The bookmarklet injects `editor.css` + `editor.js` into the current page. The ex
 ## Development
 
 ```bash
-git clone https://github.com/kenchikuliu/selector.git
-cd selector
+git clone https://github.com/kenchikuliu/web-element-selector.git
+cd web-element-selector
 # Edit assets/editor.js and assets/editor.css
 # Push to main — GitHub Pages auto-deploys
 ```

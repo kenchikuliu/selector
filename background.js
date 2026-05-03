@@ -24,6 +24,6 @@ chrome.action.onClicked.addListener(async (tab) => {
       world: "MAIN"
     });
   } catch (error) {
-    console.error("Selector injection failed:", error);
+    console.error("Web Element Selector injection failed:", error);
   }
 });

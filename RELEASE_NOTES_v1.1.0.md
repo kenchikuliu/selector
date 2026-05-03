@@ -1,12 +1,12 @@
-# Selector v1.1.0
+# Web Element Selector v1.1.0
 
-Selector now ships as a Chrome / Edge extension in addition to the original bookmarklet flow.
+Web Element Selector now ships as a Chrome / Edge extension in addition to the original bookmarklet flow.
 
 ## Highlights
 
 - Manifest V3 extension packaging for Chrome and Edge
 - One-click toolbar injection using the extension icon
-- Clean toggle behavior when launching Selector multiple times on the same page
+- Clean toggle behavior when launching Web Element Selector multiple times on the same page
 - Packaged zip asset for manual distribution and install
 - Existing bookmarklet workflow remains available
 
@@ -17,12 +17,12 @@ Selector now ships as a Chrome / Edge extension in addition to the original book
 1. Open `chrome://extensions` or `edge://extensions`
 2. Enable `Developer mode`
 3. Click `Load unpacked`
-4. Select the `selector` folder
+4. Select the `web-element-selector` folder
 5. Pin the extension and click the icon on any page
 
 ### Zip package
 
-Use the attached `selector-extension-v1.0.0.zip` asset as a packaged copy of the extension source for distribution or manual extraction.
+Use the attached packaged zip asset as a copy of the extension source for distribution or manual extraction.
 
 ## Notes
 
