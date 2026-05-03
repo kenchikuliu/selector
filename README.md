@@ -7,7 +7,7 @@ Select page regions. Write a task. Copy a prompt your AI editor can act on.
 [![License](https://img.shields.io/badge/license-MIT-111827)](LICENSE)
 
 <p>
-  <a href="https://github.com/kenchikuliu/web-element-selector/releases/latest"><img src="assets/marketing/hero.svg" alt="Web Element Selector hero preview"></a>
+  <a href="https://github.com/kenchikuliu/web-element-selector/releases/latest"><img src="assets/marketing/readme-screenshot-selector.png" alt="Web Element Selector real screenshot"></a>
 </p>
 
 Web Element Selector is a bookmarklet and Chrome/Edge extension for AI-assisted UI editing. Launch it on any page, click the exact area you want to change, describe the improvement, and copy a structured prompt for Codex, Claude Code, Cursor, or another coding assistant.
@@ -38,7 +38,7 @@ Web Element Selector is a bookmarklet and Chrome/Edge extension for AI-assisted 
 ### Download the packaged build
 
 - Latest release: `https://github.com/kenchikuliu/web-element-selector/releases/latest`
-- Current packaged zip: [`dist/web-element-selector-v1.7.0.zip`](dist/web-element-selector-v1.7.0.zip)
+- Current packaged zip: [`dist/web-element-selector-v1.8.0.zip`](dist/web-element-selector-v1.8.0.zip)
 
 ## 3-step workflow
 
@@ -47,7 +47,7 @@ Web Element Selector is a bookmarklet and Chrome/Edge extension for AI-assisted 
 Open the popup from the extension icon and launch Selector on the current tab.
 
 <p>
-  <img src="assets/marketing/feature-popup.svg" alt="Popup preview showing Launch Selector button">
+  <img src="assets/marketing/readme-screenshot-popup.png" alt="Popup screenshot showing Launch Selector button">
 </p>
 
 ### 2. Select
@@ -55,7 +55,7 @@ Open the popup from the extension icon and launch Selector on the current tab.
 Click the exact UI block you want to change. Multi-select and keyboard navigation are built in.
 
 <p>
-  <img src="assets/marketing/feature-selection.svg" alt="Selection overlay preview">
+  <img src="assets/marketing/readme-screenshot-overlay.png" alt="Selection overlay screenshot">
 </p>
 
 ### 3. Copy
@@ -63,7 +63,7 @@ Click the exact UI block you want to change. Multi-select and keyboard navigatio
 Write a task, choose the output mode, and copy a prompt formatted for your coding assistant.
 
 <p>
-  <img src="assets/marketing/feature-task.svg" alt="Task and copy preview">
+  <img src="assets/marketing/readme-screenshot-copy.png" alt="Task and copy screenshot">
 </p>
 
 ## What you can control
@@ -76,7 +76,7 @@ Write a task, choose the output mode, and copy a prompt formatted for your codin
 - Extension-level defaults from the settings page
 
 <p>
-  <img src="assets/marketing/feature-options.svg" alt="Options page preview">
+  <img src="assets/marketing/readme-screenshot-options.png" alt="Options page screenshot">
 </p>
 
 ## Key interactions

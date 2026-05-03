@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Web Element Selector Demo Page</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f7f7;
+      --text: #111416;
+      --muted: #657176;
+      --line: rgba(17, 20, 22, 0.1);
+      --card: #ffffff;
+      --accent: #90f0b1;
+      --accent-deep: #0e8f53;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(144, 240, 177, 0.35), transparent 28%),
+        linear-gradient(180deg, #eff5f3, var(--bg));
+      color: var(--text);
+    }
+
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 54px 28px 96px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 42px;
+    }
+
+    .brand {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+    }
+
+    .nav {
+      display: flex;
+      gap: 12px;
+    }
+
+    .nav-chip {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: stretch;
+      margin-bottom: 34px;
+    }
+
+    .hero-copy,
+    .hero-card,
+    .stack-card,
+    .feature-card {
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 28px 60px rgba(17, 20, 22, 0.06);
+    }
+
+    .hero-copy {
+      padding: 38px;
+    }
+
+    .eyebrow {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 62px;
+      line-height: 0.96;
+      letter-spacing: -0.06em;
+    }
+
+    .lede {
+      margin: 22px 0 0;
+      max-width: 590px;
+      font-size: 20px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .cta {
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .cta.primary {
+      background: var(--text);
+      color: #fff;
+    }
+
+    .cta.secondary {
+      background: var(--accent);
+      color: var(--text);
+    }
+
+    .hero-card {
+      padding: 24px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .mini-window {
+      border: 1px solid rgba(17, 20, 22, 0.08);
+      border-radius: 22px;
+      background: #101214;
+      color: #f7f8f8;
+      padding: 18px;
+    }
+
+    .mini-title {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #8bf0b0;
+      margin-bottom: 12px;
+    }
+
+    .launch-button {
+      margin-top: 18px;
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 16px;
+      background: #f4f5f5;
+      color: #111416;
+      font-weight: 800;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .stack-card {
+      padding: 28px;
+      margin-bottom: 28px;
+    }
+
+    .stack-label {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 12px;
+    }
+
+    .stack-title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 10px;
+    }
+
+    .stack-copy {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 760px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      padding: 22px;
+      min-height: 206px;
+    }
+
+    .feature-card h2 {
+      margin: 14px 0 10px;
+      font-size: 24px;
+      letter-spacing: -0.04em;
+    }
+
+    .feature-card p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    .ui-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(144, 240, 177, 0.18);
+      color: var(--accent-deep);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mock-prompt {
+      margin-top: 16px;
+      border-radius: 18px;
+      background: #16191b;
+      color: #f4f6f6;
+      padding: 18px;
+      font-family: "SF Mono", Menlo, monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">Northstar Studio</div>
+      <div class="nav">
+        <div class="nav-chip">Strategy</div>
+        <div class="nav-chip">Design Systems</div>
+        <div class="nav-chip">Ship Faster</div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <article class="hero-copy">
+        <div class="eyebrow">A page worth selecting</div>
+        <h1 class="hero-title">Sharper interfaces for teams shipping with AI.</h1>
+        <p class="lede">This demo page gives Web Element Selector something realistic to point at: a hero block, supporting copy, clear cards, and a prompt-friendly layout.</p>
+        <div class="cta-row">
+          <div class="cta primary">Design Audit</div>
+          <div class="cta secondary">AI Workflow</div>
+        </div>
+      </article>
+
+      <aside class="hero-card">
+        <div class="mini-window">
+          <div class="mini-title">Popup</div>
+          <div style="font-size: 24px; font-weight: 800; letter-spacing: -0.04em;">Launch from the current tab</div>
+          <div style="margin-top: 10px; color: rgba(255,255,255,0.72); line-height: 1.6;">Open the selector, choose the exact region, and copy a structured prompt.</div>
+          <div class="launch-button">Launch Selector</div>
+        </div>
+        <div class="mock-prompt">Task
+Improve the hierarchy and spacing in this section.
+
+Selected Elements
+1. .hero-title &lt;h1&gt;
+selector: body &gt; .shell &gt; .hero &gt; article &gt; h1</div>
+      </aside>
+    </section>
+
+    <section class="stack-card">
+      <div class="stack-label">Selected region</div>
+      <div class="stack-title">Point at the exact UI block you want to improve</div>
+      <div class="stack-copy">The selector works best when the target is visually obvious. This section is intentionally designed to showcase layout hierarchy, spacing, nearby context, and AI-friendly prompts.</div>
+    </section>
+
+    <section class="feature-grid">
+      <article class="feature-card">
+        <div class="ui-badge">Focused</div>
+        <h2>Exact targeting</h2>
+        <p>Select one block or many, then keep the requested change scoped to the right region.</p>
+      </article>
+      <article class="feature-card">
+        <div class="ui-badge">Nearby</div>
+        <h2>Context export</h2>
+        <p>Include surrounding containers when the implementation needs layout context, not just one node.</p>
+      </article>
+      <article class="feature-card">
+        <div class="ui-badge">Safe mode</div>
+        <h2>Privacy by default</h2>
+        <p>Export selectors and structure without leaking page text unless you explicitly switch to Full.</p>
+      </article>
+    </section>
+  </div>
+</body>
+</html>

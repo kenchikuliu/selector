@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.8.0 - 2026-05-03
+
+Real screenshot showcase release.
+
+### Added
+
+- Reproducible marketing screenshot script under `scripts/capture-marketing.mjs`
+- Demo page used to generate consistent repository screenshots
+- Real PNG screenshots for popup, selector overlay, copy panel, and settings
+
+### Improved
+
+- README showcase now uses actual product screenshots instead of only illustrative SVGs
+- `.tmp/` build artifacts are ignored in git
+
 ## v1.7.0 - 2026-05-03
 
 Marketing and README showcase release.
