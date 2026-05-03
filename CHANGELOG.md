@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.1.0 - 2026-05-03
+
+Release process documentation update.
+
+### Added
+
+- Project-level `docs/launch-checklist.md` covering versioning, screenshots, Pages, GitHub releases, and store submission
+
+### Improved
+
+- Chrome Web Store docs now link back to a single end-to-end release flow
+
 ## v2.0.0 - 2026-05-03
 
 Chrome Web Store submission kit release.

@@ -16,3 +16,4 @@ This folder contains the minimum reusable material needed to submit `Web Element
 2. Upload screenshots in the order from `screenshots.md`
 3. Reuse the privacy wording from `privacy.md`
 4. Walk through `submission-checklist.md` before hitting submit
+5. Use [`../launch-checklist.md`](../launch-checklist.md) for the full project release flow
