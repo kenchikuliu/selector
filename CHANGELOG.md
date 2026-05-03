@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.1.1 - 2026-05-03
+
+Landing page refresh.
+
+### Improved
+
+- Replaced the minimal install page with a fuller product landing page
+- Added stronger public CTAs for extension install, bookmarklet use, and release download
+- Expanded public product storytelling with screenshots and feature sections
+
 ## v2.1.0 - 2026-05-03
 
 Release process documentation update.
