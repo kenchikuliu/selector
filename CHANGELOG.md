@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.4.0 - 2026-05-03
+
+Popup workflow release.
+
+### Added
+
+- Extension popup with current-tab status and one-click launch
+- Quick links to the install page, GitHub repository, and latest release
+
+### Improved
+
+- Shared injection path between toolbar actions and popup launch
+- Better handling for restricted browser pages where injection is not allowed
+
 ## v1.3.0 - 2026-05-03
 
 Distribution polish release.

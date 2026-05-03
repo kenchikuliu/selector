@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Web Element Selector</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="popup">
+    <div class="eyebrow">
+      <span class="dot"></span>
+      <span>Web Element Selector</span>
+    </div>
+    <h1>Select page regions for AI editing</h1>
+    <p class="sub">Launch the selector on the current tab, then click the exact UI area you want to improve.</p>
+
+    <section class="card">
+      <div class="label">Current tab</div>
+      <div class="tab-title" id="tab-title">Checking current page…</div>
+      <div class="tab-url" id="tab-url"></div>
+      <div class="status" id="tab-status"></div>
+    </section>
+
+    <button class="primary" id="launch-btn">Launch Selector</button>
+
+    <div class="actions">
+      <a href="https://kenchikuliu.github.io/web-element-selector/" target="_blank" rel="noreferrer">Open install page</a>
+      <a href="https://github.com/kenchikuliu/web-element-selector" target="_blank" rel="noreferrer">View GitHub</a>
+      <a href="https://github.com/kenchikuliu/web-element-selector/releases/latest" target="_blank" rel="noreferrer">Latest release</a>
+    </div>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>
